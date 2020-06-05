@@ -46,7 +46,13 @@ class App extends React.Component {
                 price: 18000,
                 img: 'https://auto.ndtvimg.com/car-images/big/mercedes-amg/gle-coupe/mercedes-amg-gle-coupe.jpg?v=2'
             }
-        ]
+        ],
+        visible: true,
+        appTitle: 'Cars application'
+    }
+
+    toggleHandler() {
+        this.setState({visible: !this.state.visible})
     }
 
     handleMarked(name) {
@@ -58,14 +64,41 @@ class App extends React.Component {
     }
 
     renderCars() {
+
+        if (!this.state.visible) {
+            return null;
+        }
+
         return this.state.cars.map(car => {
             return (<Car car={car} key={car.name} onMark={this.handleMarked.bind(this, car.name)}/>)
         })
     }
 
+    titleChangeHandler(title) {
+        if (title.trim() === "") {
+            this.setState({appTitle: 'Cars application'})
+        } else {
+            this.setState({appTitle: title})
+        }
+    }
+
     render() {
+
         return (
             <div className="app">
+                <h1>{this.state.appTitle}</h1>
+                <button
+                    onClick={() => this.toggleHandler()}
+                    style={{marginRight: 20}}
+                >Toggle
+                </button>
+                <input
+                    type="text"
+                    placeholder="Change title!"
+                    onChange={(event) => this.titleChangeHandler(event.target.value)}
+                    value={this.state.appTitle}
+                />
+                <hr/>
                 <div className="list">
                     {this.renderCars()}
                 </div>
